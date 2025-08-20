@@ -107,7 +107,7 @@ def train_gan(generator, discriminator, gan, data, latent_dim, epochs=1000, batc
         if epoch % 100 == 0:
             print(f"Epoch {epoch}/{epochs} | D Loss: {d_loss:.4f} | G Loss: {g_loss:.4f}")
 
-def generate_music(generator, latent_dim, bass_notes, midi_file="bass_guitar_output.mid", audio_file="bass_guitar_output.wav", sequence_length=100, soundfont="ML from Scratch\MusicGen\SQ_008_Rock_Bass.sf2"):
+def generate_music(generator, latent_dim, bass_notes, midi_file="bass_guitar_output.mid", audio_file="bass_guitar_output.wav", sequence_length=100, soundfont="path\to\your\SQ_008_Rock_Bass.sf2"):
   
     noise = np.random.normal(0, 1, (sequence_length, latent_dim))
     generated_notes = generator.predict(noise)
@@ -143,11 +143,11 @@ def generate_music(generator, latent_dim, bass_notes, midi_file="bass_guitar_out
         subprocess.run(["fluidsynth", "-ni", soundfont, midi_file, "-F", audio_file], check=True)
         print(f"Generated bass guitar audio saved as {audio_file}")
     except FileNotFoundError:
-        print("Error: Fluidsynth CLI not found. Please ensure it is installed and accessible from the command line.")
+        print("Error: Fluidsynth CLI not found")
     except subprocess.CalledProcessError as e:
         print(f"Error during audio conversion: {e}")
 
-dataset_path = "E:\General\Programming\Python\ML from Scratch\MusicGen\MetalDataset"  
+dataset_path = "path_to_your_dataset"  
 file_limit = 85  
 bass_tracks = process_dataset_for_bass(dataset_path, file_limit=file_limit)
 
@@ -174,3 +174,4 @@ generator_model = generator(latent_dim, output_dim)
 generator_model.compile(optimizer="adam", loss="categorical_crossentropy")
 
 generate_music(generator_model, latent_dim, bass_notes, midi_file="bass_guitar_output.mid", audio_file="bass_guitar_output.wav", sequence_length=500)
+
